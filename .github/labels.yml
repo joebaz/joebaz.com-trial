@@ -1,0 +1,27 @@
+- name: content
+  color: "60fd76"
+  description: site copy/images/events/links
+- name: docs
+  color: "bfd4f2"
+  description: repository instructions/workflow docs
+- name: feature
+  color: "1e27c4"
+  description: new capability or site enhancement
+- name: fix
+  color: "e73350"
+  description: broken behavior/layout/accessibility
+- name: needs-info
+  color: "D4C5F9"
+  description: Waiting for more information
+- name: needs-triage
+  color: "FBCA04"
+  description: Maintainer needs to evaluate this issue
+- name: ready-for-agent
+  color: "0E8A16"
+  description: Ready for an agent
+- name: ready-for-human
+  color: "1D76DB"
+  description: Requires human implementation
+- name: wontfix
+  color: "FFFFFF"
+  description: Will not be actioned

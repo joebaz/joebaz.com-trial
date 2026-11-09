@@ -1,0 +1,115 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  detect:
+    name: Detect documentation-only changes
+    runs-on: ubuntu-latest
+    outputs:
+      docs-only: ${{ steps.detect.outputs.docs-only }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Classify changed files
+        id: detect
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          BEFORE_SHA: ${{ github.event.before }}
+        run: |
+          # Three dots compare a pull request head with its merge base, so later
+          # commits on main are not counted. Two dots compare a push's before and
+          # after trees, including after a force push.
+          case "$EVENT_NAME" in
+            pull_request) base=$PR_BASE_SHA head=$PR_HEAD_SHA dots=... ;;
+            push) base=$BEFORE_SHA head=$GITHUB_SHA dots=.. ;;
+          esac
+
+          # Anything but a non-empty list of documentation paths runs the full
+          # checks. git cat-file rejects missing, all-zero, and unfetched SHAs;
+          # --no-renames lists both paths of a move; -z keeps unusual paths intact.
+          docsOnly=false
+          changed=$RUNNER_TEMP/changed-files
+          if git cat-file -e "$base^{commit}" && git cat-file -e "$head^{commit}" &&
+            git diff --name-only --no-renames -z "$base$dots$head" -- >"$changed" &&
+            [ -s "$changed" ]; then
+            docsOnly=true
+            while IFS= read -r -d '' path; do
+              case "$path" in
+                # Documentation path list. Markdown under src/ or public/ can be
+                # published with the site, so it is content.
+                src/* | public/*) docsOnly=false ;;
+                .github/ISSUE_TEMPLATE/* | .github/pull_request_template.md | *.md) ;;
+                *) docsOnly=false ;;
+              esac
+            done <"$changed"
+          fi
+          echo "docs-only=$docsOnly" | tee -a "$GITHUB_OUTPUT"
+
+  formatting:
+    name: Formatting
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check formatting
+        run: npm run format:check
+
+  full-checks:
+    name: Full checks
+    needs: detect
+    # !cancelled() still runs the full checks if change detection fails.
+    if: ${{ !cancelled() && needs.detect.outputs.docs-only != 'true' }}
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Check types
+        run: npm run check
+
+      - name: Run Playwright tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload failure artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-test-results
+          path: test-results/
+          if-no-files-found: ignore
+          retention-days: 7

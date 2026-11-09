@@ -1,0 +1,22 @@
+{
+  "worktree": {
+    "setup": "npm ci"
+  },
+  "scripts": {
+    "Dev Server": {
+      "type": "service",
+      "command": "npm run dev"
+    },
+    "Playwright Test": {
+      "command": "npm test"
+    },
+    "Build Site": {
+      "command": "npm run build"
+    }
+  },
+  "metadataGeneration": {
+    "branchName": {
+      "instructions": "Format: <type>/<short-kebab-case-description>.\n\nChoose exactly one type:\n- \"content\" for Content, Page Structure, or both, such as copy, images, navigation labels, metadata, shared site data, pages, or layout.\n- \"docs\" for repository documentation and instructions only, such as README.md, CONTRIBUTING.md, AGENTS.md, CLAUDE.md, and similar documentation.\n- \"fix\" for broken or incorrect behavior, layout, accessibility, performance, or functionality, including an uncovered design gap in an existing capability.\n- \"feature\" for one cohesive new or expanded capability.\n\nUse a concise, specific, lowercase kebab-case description. Do not use any other prefix."
+    }
+  }
+}

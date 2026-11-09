@@ -1,0 +1,23 @@
+# Facts about this website, as an intake form. Astro's build reads site_name,
+# production_url and language from this file; the other facts are records.
+#
+# - Leave a fact empty while it's undecided, for example `site_name:`.
+# - Write `none` when it's decided the website doesn't have it.
+# - redirecting_hostnames, other_languages, analytics and user_data_stored may
+#   also be lists.
+# - Never put secrets or credentials in this file.
+# - Adding a new fact needs the maintainer's approval.
+site_name:
+business_name:
+site_description:
+production_url:
+redirecting_hostnames:
+language:
+other_languages:
+hosting_provider:
+dns_provider:
+domain_registrar:
+analytics:
+user_data_stored:
+maintainer:
+client_approver:

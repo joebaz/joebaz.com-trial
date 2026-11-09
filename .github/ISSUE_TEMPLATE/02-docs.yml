@@ -1,0 +1,78 @@
+name: Documentation Issue
+description: Request one focused change to repository documentation or instructions.
+title: "[Docs]: "
+labels:
+  - docs
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe one focused documentation change. A document may combine types; choose its primary purpose below.
+
+        Use this form only for repository documentation and instructions. Do not use it for changes to site content, behavior, tests, build behavior, deployment, or external services.
+
+        Do not include secrets, credentials, `.env` values, local paths, or private personal or customer information.
+
+        - **SOP:** Instructions that guide a human or agent through repeatable work (e.g., `AGENTS.md`).
+        - **Reference:** Facts, rules, commands, conventions, or links consulted while performing work rather than one complete sequence of steps (e.g., `README.md`).
+        - **Design:** A PRD or specification that defines the goals, requirements, and scope of proposed work. Implementation is separate.
+        - **Other:** A documentation request that does not fit the types above.
+
+  - type: dropdown
+    id: document_type
+    attributes:
+      label: Type
+      description: Choose the best match for the document's primary purpose.
+      options:
+        - SOP
+        - Reference
+        - Design
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: document_goal
+    attributes:
+      label: Document goal
+      description: Who will use this document—a human, an agent, or both—and what should it help them accomplish or decide? If updating an existing document, provide its repository-relative file path.
+    validations:
+      required: true
+
+  - type: textarea
+    id: website_facts_affected
+    attributes:
+      label: Website facts affected
+      description: List changes to facts in `website-facts.yaml` at the repository root. Leave empty if none change.
+    validations:
+      required: false
+
+  - type: textarea
+    id: source_material
+    attributes:
+      label: Source material and examples
+      description: Provide any public links, freeform context, or examples that can help create or update the document.
+      value: |
+        <!-- Add source material or examples when available. -->
+    validations:
+      required: false
+
+  - type: textarea
+    id: supporting_files
+    attributes:
+      label: Supporting files
+      description: Upload any documents or images that can help with this change. Before uploading, redact private personal or customer information.
+      value: |
+        <!-- Attach supporting files here. -->
+    validations:
+      required: false
+
+  - type: textarea
+    id: out_of_scope
+    attributes:
+      label: Issue Scope
+      description: List what is in scope and out of scope for this issue, including documentation, code, and tool dependencies.
+      value: |
+        <!-- Add included and excluded work, including dependencies. -->
+    validations:
+      required: false

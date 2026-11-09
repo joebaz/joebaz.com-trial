@@ -1,0 +1,403 @@
+# Human-readable documentation only; no validator, hook, or workflow engine reads this file.
+name: Lifecycle
+applies_to: All issue types
+authority:
+  - This file owns the sequence, handoffs, approval gates, loops, update timing, and the Progress Readout.
+  - Each step's method links to the role SOP or guide that says how to do it.
+  - specs/15-lifecycle.md is the historical design record.
+reading:
+  - Stages run in order. Steps run in listed order unless a transition names another step.
+  - Transitions target unique step keys, independent of position.
+  - Wait at a gate until its condition is met.
+  - Closing a stage opens the next. Closing Retro completes the Lifecycle.
+  - A Coordinator resuming work enters at the step its reconciled state establishes, not at Define.
+  - State that stays unknown waits at the gate it affects.
+rules:
+  authorization:
+    - The Maintainer approves requirements, scope, and changes to either, and the final plan revision under rules.approvals.
+    - Agent findings, recommendations, reports, checkpoints, and Progress Readouts authorize nothing.
+    - When approved materials change, follow agents/roles/coordinator.md#when-approved-requirements-change.
+  evidence:
+    - PR and CI evidence stays in GitHub.
+    - Detailed reports go in chat, as qa.md#report-results describes.
+    - A step's evidence says where proof is recorded; it is not approval.
+  requirements:
+    - Approved requirements are one contract with scope, acceptance criteria, exclusions, and validation.
+    - The contract is the issue's requirements, a spec issue, or a linked repository spec.
+    - Record the artifact, a revision of its approved content, and the Maintainer's approval.
+    - A tracker artifact's revision is its own edit snapshot or a digest of the approved content, not a bare URL or the issue's last update time.
+    - A repository file's revision is a commit or blob.
+    - An Agent Brief summarizes and links the approved requirements; it is neither a second contract nor an approval.
+    - A skill-applied label or a checkpoint is not approval.
+    - An already approved, ready issue needs no further approval and no second spec.
+  approvals:
+    - Requirements approval, plan approval, and final sign-off are separate Maintainer decisions; none implies another.
+    - Requirements approval accepts the requirements contract in Define.
+    - Plan approval accepts one final plan revision in Plan, after the Architect's assessment and a decision on every recommendation.
+    - Final sign-off accepts the implemented commit in Implement.
+    - Plan approval names the plan's revision, a commit or blob. The Coder works only from an approved revision.
+    - A plan revision is material when it changes an operation, a file in scope, wording to implement, a check, or a recommendation's decision. A material revision needs a new plan approval.
+    - Before Plan closes, a material revision from any step returns to implementation-plan, then plan-assessment and recommendation decisions before plan-approval.
+    - After Plan closes, pause the work that depends on a material revision until the Maintainer approves the revised plan; continue under the normal cycle, review, and sign-off rules, with signed-off-assessment covering the final signed-off commit.
+    - Other revisions, such as recording an already approved decision or fixing a typo or link, keep the approval. Record the new revision with the approval it falls under. Merely recording an already approved recommendation decision does not require another assessment.
+  artifacts:
+    - Create Task Artifacts only when needed, at the locations in agents/issue-tracker.md.
+  state:
+    - Dispatching an agent, invoking a skill, or starting a step does not complete it.
+    - Record the observed outcome and its evidence, check the step's completion condition, then take the matching transition.
+    - A running or waiting step, or one with an unresolved failure, stays current with its wait, error, or partial output recorded.
+    - Kept output satisfies a later transition only through the evidence that transition names, such as a Maintainer direction.
+  tracking:
+    - On every stage entry, including a return to Implement, refresh the native task list to that stage's steps.
+    - At every transition, update the task list's step status.
+    - Give the Progress Readout as progress_readout describes.
+    - Follow agents/roles/coordinator.md#track-the-stage.
+  review_exception:
+    - Omit a separate Reviewer only with the Maintainer's explicit waiver for one isolated one- or two-line change.
+    - Count the whole logical unreviewed change, not individual hunks; never split a larger change to qualify.
+    - Record the waiver and its exact revision in chat and the checkpoint.
+    - Re-evaluate eligibility for every revision; a waiver doesn't carry to other changes or later revisions.
+    - An assignment does not imply a waiver.
+    - Keep validation, final Maintainer sign-off, the final Architect assessment, cycle authorization, count and limits, and evidence matching the current revision.
+    - Record an eligible exception as an exception; never claim a Reviewer pass.
+  cycles:
+    - A cycle is one round of changes followed by one independent review or a recorded eligible review_exception.
+    - Count exempt rounds as cycles too.
+    - Each cycle needs Maintainer authorization.
+    - Starting the Coordinator authorizes the first cycle, after the go-ahead for a needs-triage issue.
+    - Each later cycle needs a Maintainer request for changes or an authorized fix.
+    - After Reviewer findings, the Coordinator gives them to the Maintainer and waits for the go-ahead before another cycle.
+    - At most five cycles per issue; a sixth or later needs an explicit Maintainer extension.
+    - Returning for further changes, including to coder-briefing from Implement or Publish, never resets the count.
+checkpoint:
+  format: execution-checkpoint.md
+  method: agents/roles/coordinator.md#keep-the-execution-checkpoint
+  updates:
+    - Whenever a step starts, waits, fails, or completes, and at every transition.
+    - Whenever a decision, handoff, or recorded field changes.
+progress_readout:
+  when:
+    - The Coordinator starts every message to the Maintainer that reports a change with the full Progress Readout.
+    - A message without a change has none. There is no short form.
+  source:
+    - Build the Progress Readout from the execution checkpoint alone. Its steps give the markers; its waits, errors, and next give the current step's note.
+    - The native task list mirrors the same record. A completed step is completed, the current step is in progress, and a pending step is pending. Without a task tool, the Progress Readout is the list.
+  format:
+    - "The first line is Stage: <stage name>, with no count and no emoji."
+    - Each applicable step of the current stage follows, in Lifecycle order, by step key.
+    - "[x] marks a step completed with recorded evidence, and [ ] marks a pending step."
+    - The current step shows its status emoji in place of its checkbox, then a short note. When the Maintainer must act, the note names the exact action and gate; otherwise it says what is happening.
+    - A step is conditional when some route from the stage's entry to its exit skips it. List a conditional step, and the steps its branch then runs in order, only once the transition into it is taken.
+    - After a return to an earlier step, the steps that must run again show [ ]. Cycle counts and approvals are kept.
+    - "Until the state is established, the Progress Readout is Stage: reconciling with no list. Never report a stage or step that isn't confirmed."
+  status:
+    about: Choose the current step's emoji by its status and what it waits on. A status emoji is not completion.
+    🛑: An error or failure, with the error and the action needed. Status failed.
+    ⏸️: A usage-limit pause, naming the agent and the reset time, or saying it's unknown. Status waiting on a usage limit.
+    🟡: Needs the Maintainer's attention. Status waiting on the Maintainer.
+    🟢: Work moving forward. Status started, or waiting on an agent or CI.
+  examples: agents/roles/coordinator.md#track-the-stage
+scenarios:
+  about: Optional routes through Define into the Plan stage; the steps below still govern readiness and approval.
+  method: agents/roles/planner.md#choose-a-route
+stages:
+  - name: Define
+    entry: The Maintainer starts a Coordinator on an issue.
+    exit: readiness-confirmation
+    completion: Requirements are approved and ready to plan; issue status is In progress.
+    steps:
+      - key: readiness-check
+        role: Coordinator
+        action: Establish the issue's state and check that it is ready.
+        method:
+          - agents/roles/coordinator.md#start
+          - agents/roles/coordinator.md#check-that-the-issue-is-ready
+        evidence: Chat readiness report; the issue and its approved artifacts.
+        transitions:
+          - when: Requirements approved under rules.requirements and ready; no repeat interview or approval.
+            to: readiness-confirmation
+          - when: needs-triage or otherwise unready.
+            to: planner-handoff
+      - key: planner-handoff
+        role: Coordinator
+        action: Send the issue to the Planner, naming the gaps.
+        evidence: Chat assignment and the issue.
+      - key: requirements-interview
+        role: Planner
+        action: Interview the Maintainer and record the agreed requirements in the issue or its linked spec.
+        method:
+          - agents/roles/planner.md#capture-requirements
+          - agents/triage-labels.md
+        evidence: Issue or linked spec revision; chat interview.
+      - key: requirements-review
+        role: Maintainer
+        action: Review the requirements contract under rules.requirements.
+        evidence: Maintainer decision in chat or the issue, naming the artifact and revision.
+        transitions:
+          - when: Changes needed.
+            to: requirements-interview
+          - when: Accepted.
+            to: readiness-confirmation
+      - key: readiness-confirmation
+        role: Coordinator
+        action:
+          - Confirm readiness.
+          - Change the issue's status from To do to In progress.
+          - Close Define; the Plan stage needs no entry approval.
+        method:
+          - agents/roles/coordinator.md#change-github-project-status
+        evidence: Issue status and chat confirmation; updated checkpoint.
+  - name: Plan
+    entry: Define is closed.
+    exit: plan-close
+    completion:
+      - The Architect has assessed the plan.
+      - Every recommendation has a decision.
+      - The plan reflects authorized feedback, with no pending scope decision.
+      - The Maintainer has approved the final plan revision under rules.approvals.
+    steps:
+      - key: planner-briefing
+        role: Coordinator
+        action: Brief the Planner on the approved requirements, artifacts, and constraints.
+        evidence: Chat briefing with requirement references and revisions.
+      - key: implementation-plan
+        role: Planner
+        action: Build the implementation plan.
+        method:
+          - agents/roles/planner.md#plan-the-implementation
+        evidence: Plan file and revision linked in chat.
+      - key: plan-assessment
+        role: Coordinator and Architect
+        action:
+          - The Coordinator asks the Architect to assess the plan.
+          - On every return before Plan closes, regardless of the originating step, the Architect assesses the material changes since the last assessed revision under rules.approvals.
+        method:
+          - agents/roles/architect.md#work
+        evidence: Architect assessment in chat, tied to the plan revision.
+      - key: recommendations-review
+        role: Planner and Coordinator
+        action:
+          - The Coordinator sends the Architect's recommendations to the Planner.
+          - The Planner revises the plan for in-scope recommendations.
+          - The Planner refers out-of-scope recommendations through the Coordinator to the Maintainer.
+        evidence: Recommendations and their disposition in chat; revised plan.
+        transitions:
+          - when: Out-of-scope recommendations need decisions.
+            to: scope-decision
+          - when: No out-of-scope recommendation is pending.
+            to: plan-approval
+      - key: scope-decision
+        role: Maintainer and Planner
+        action:
+          - The Maintainer decides each pending out-of-scope recommendation once.
+          - The Planner revises the plan for approved ones.
+        method:
+          - agents/roles/coordinator.md#when-approved-requirements-change
+        evidence: Maintainer decisions in chat or the issue; updated plan and checkpoint.
+      - key: plan-approval
+        role: Maintainer and Coordinator
+        action:
+          - The Coordinator asks the Maintainer to approve the final plan revision.
+          - The Maintainer approves that revision or requests changes.
+        method:
+          - agents/roles/coordinator.md#hand-back
+        evidence: Maintainer approval in chat or the issue, naming the plan revision; the checkpoint's plan evidence.
+        transitions:
+          - when: Changes requested.
+            to: implementation-plan
+          - when: Approved.
+            to: plan-close
+      - key: plan-close
+        role: Coordinator
+        action: Confirm the Plan stage's obligations and close it.
+        evidence: Chat confirmation and updated checkpoint.
+  - name: Implement
+    entry:
+      - Plan is closed, or Publish returns for an authorized file change.
+      - Every cycle meets rules.cycles before changes start.
+      - The Coder works from a plan revision approved under rules.approvals.
+    exit: implementation-evidence
+    completion:
+      - The current revision has an independent review or a recorded eligible review_exception.
+      - The Maintainer has given final sign-off.
+      - The Architect has assessed the signed-off commit.
+      - The review or waiver and all other evidence match that revision.
+      - No authorized changes remain.
+    steps:
+      - key: coder-briefing
+        role: Coordinator
+        action:
+          - Check cycle authorization and count, including an explicit extension for cycle six or later.
+          - Brief the Coder on requirements, the approved plan revision, references, scope, and assignment, with the Coder as the one editor.
+          - Record the cycle without resetting earlier cycles.
+        evidence: Chat assignment; checkpoint cycle count and Maintainer authorization.
+      - key: implementation-validation
+        role: Coder and Coordinator
+        action:
+          - The Coder implements the assigned change and validates it under the plan.
+          - For a new or substantially revised document, the Coder first sends a short outline to the Coordinator, who gets the Maintainer's approval; the Coder expands it only then.
+        method:
+          - agents/roles/coder.md#work
+          - ../CONTRIBUTING.md#validate-your-change
+          - qa.md
+        evidence: Repository diff; chat outline approval when applicable, and validation report.
+      - key: reviewer-dispatch
+        role: Coordinator
+        action:
+          - Re-evaluate review_exception eligibility for the current revision.
+          - With a recorded eligible waiver, go to Maintainer review.
+          - Otherwise, dispatch a separate Reviewer on the whole changed issue revision, including earlier cycles' changes.
+        evidence: Chat assignment, or the eligible waiver naming the exact revision; checkpoint record.
+        transitions:
+          - when: A recorded eligible review_exception applies to this revision.
+            to: maintainer-review
+          - when: No recorded eligible waiver applies.
+            to: independent-review
+      - key: independent-review
+        role: Reviewer
+        action: Check the change, run the applicable checks, and report findings and a recommendation.
+        method:
+          - agents/roles/reviewer.md#review
+        evidence: Chat findings and check results, tied to the reviewed revision.
+        transitions:
+          - when: Findings; wait for the Maintainer's go-ahead before another cycle.
+            to: coder-briefing
+          - when: No findings.
+            to: maintainer-review
+      - key: maintainer-review
+        role: Maintainer and Coordinator
+        action:
+          - The Maintainer reviews the file diffs, comments, and commits.
+          - If changes are needed, the Coordinator reconciles the feedback with the commit and briefs the remaining changes.
+          - Re-evaluate the review policy on the next revision; any independent review covers the whole changed issue revision.
+          - Otherwise, the Maintainer gives final sign-off.
+        evidence: Maintainer feedback or final sign-off naming the commit; checkpoint decision.
+        transitions:
+          - when: The Maintainer requests changes.
+            to: coder-briefing
+          - when: Final sign-off given.
+            to: signed-off-assessment
+      - key: signed-off-assessment
+        role: Coordinator and Architect
+        action:
+          - Dispatch the Architect to assess the signed-off commit.
+          - Take the recommendations to the Maintainer for a decision.
+        method:
+          - agents/roles/architect.md#work
+        evidence: Chat Architect assessment and Maintainer decision, tied to the commit.
+        transitions:
+          - when: The Maintainer authorizes changes.
+            to: coder-briefing
+          - when: No changes authorized.
+            to: implementation-evidence
+      - key: implementation-evidence
+        role: Coordinator
+        action: Confirm every Implement completion condition and close the stage.
+        evidence: Matching sign-off, assessment, review or eligible waiver, and validation references; updated checkpoint.
+  - name: Publish
+    entry: Implement is closed for the revision to publish.
+    exit: merge-confirmation
+    completion: The signed-off revision is merged into main, the remote branch is deleted, and the Maintainer confirms the merge.
+    steps:
+      - key: remote-push
+        role: Maintainer
+        action: Push the signed-off revision to the remote.
+        evidence: GitHub commit and remote revision.
+      - key: pull-request
+        role: Coordinator
+        action: Open the PR, or reuse the issue's open PR for a new revision.
+        method:
+          - ../CONTRIBUTING.md#open-a-pull-request
+        evidence: GitHub PR linking the issue and summarizing validation.
+      - key: ci-result
+        role: GitHub
+        action: Run CI on the pushed commit.
+        evidence: GitHub CI results tied to the commit.
+        transitions:
+          - when: CI passes.
+            to: maintainer-merge
+          - when: CI fails.
+            to: ci-diagnosis
+      - key: ci-diagnosis
+        role: Coordinator
+        action:
+          - Diagnose the CI failure or merge blocker.
+          - A transient failure needs no file change; CI reruns on the same commit.
+          - A file change needs Maintainer authorization and a full return through Implement, including its evidence check, before remote-push updates the same PR.
+        evidence: Chat diagnosis and authorization; GitHub CI and PR evidence.
+        transitions:
+          - when: File change needed; wait for Maintainer authorization.
+            to: coder-briefing
+          - when: Transient failure, no file change.
+            to: ci-result
+      - key: maintainer-merge
+        role: Maintainer and Coordinator
+        action:
+          - The Maintainer merges into main only with passing CI, no pending PR feedback, and the pushed revision matching the signed-off commit.
+          - Pending feedback or a revision mismatch blocks the merge, even when CI passes.
+          - The Coordinator reports a blocker in chat and waits for the Maintainer's direction.
+        evidence: GitHub PR, CI, commit comparison, and merge; chat blocker or direction.
+        transitions:
+          - when: Blocked, and the direction requires a file change.
+            to: ci-diagnosis
+          - when: Blocked without an authorized file change; wait for direction and recheck the gate.
+            to: maintainer-merge
+          - when: Merged with every gate met.
+            to: remote-branch-deletion
+      - key: remote-branch-deletion
+        role: GitHub
+        action: Delete the remote branch.
+        evidence: GitHub branch deletion on the PR.
+      - key: merge-confirmation
+        role: Maintainer and Coordinator
+        action:
+          - The Maintainer confirms the merge.
+          - The Coordinator closes Publish.
+        evidence: GitHub merge, chat confirmation, and updated checkpoint.
+  - name: Retro
+    entry: Publish is closed.
+    exit: retro-close
+    completion:
+      - retro-drafts ended in one of three ways. A skip was recorded before any drafts existed; a completed /retro run was recorded with zero candidates and no kept drafts; or every presented draft is filed exactly as approved or dropped.
+      - All other stage obligations are met.
+    steps:
+      - key: retro-drafts
+        role: Coordinator and Maintainer
+        action:
+          - This step is optional until session capture exists.
+          - The Maintainer starts /retro (mattpocock-skills:retro) or skips it; the Coordinator records the outcome and presents any drafts.
+        method:
+          - agents/roles/coordinator.md#run-retro-drafts
+        evidence:
+          - The Maintainer's run-or-skip answer in chat.
+          - For a run, the skill invocation, then its drafts, zero-candidate result, or error and partial output, in chat and the checkpoint.
+          - For a skip, the no-draft skip record in chat and the checkpoint.
+        transitions:
+          - when: /retro is running, or a failed or partial run awaits the Maintainer's direction; wait, error, partial output, and next action recorded.
+            to: retro-drafts
+          - when: Skipped before any drafts, including kept partial drafts, exist; skip recorded.
+            to: retro-close
+          - when: Candidate drafts are ready for decision, either from a completed /retro run with any kept partial drafts, or as kept partial drafts the Maintainer has explicitly directed to decide, with the failed run still recorded as failed.
+            to: retro-draft-decisions
+          - when: /retro completed with zero candidates and no kept drafts; result recorded.
+            to: retro-close
+      - key: retro-draft-decisions
+        role: Maintainer and Coordinator
+        action:
+          - The Maintainer reviews each draft.
+          - The Coordinator revises commented drafts for another review.
+          - The Coordinator files approved drafts exactly as approved.
+          - The Coordinator drops declined drafts.
+        evidence: Chat decisions and revised drafts; GitHub issues for approved drafts.
+        transitions:
+          - when: Any draft still needs revision, review, or filing.
+            to: retro-draft-decisions
+          - when: Every draft filed or dropped.
+            to: retro-close
+      - key: retro-close
+        role: Coordinator
+        action:
+          - Confirm every stage obligation is met, including the recorded skip, the recorded zero-candidate result, or every draft filed or dropped.
+          - Close Retro, completing the Lifecycle.
+          - Hand back to the Maintainer and tell them the worktree can be archived.
+        evidence: Chat completion confirmation, hand back, and archive notice; checkpoint with Retro closed.

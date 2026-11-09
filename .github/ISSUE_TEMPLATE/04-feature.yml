@@ -1,0 +1,94 @@
+name: Feature Issue
+description: Request one cohesive new or expanded capability.
+title: "[Feature]: "
+labels:
+  - feature
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form for intentional new functionality or a meaningful expansion of an existing capability. Use the Fix form for unintended behavior or an uncovered design gap.
+
+        You may submit this form with only a title to create a feature container. Complete the relevant sections as the PRD, specification, and project plan are developed. Do not begin implementation until the necessary product and behavioral decisions are documented.
+
+        Do not include secrets, credentials, `.env` values, local paths, or private personal or customer information. Only provide personal information that is approved for public website publication.
+
+  - type: textarea
+    id: problem_or_opportunity
+    attributes:
+      label: Problem or opportunity
+      description: Describe who is affected, what need exists, and why it is worth addressing.
+      value: |
+        <!-- Complete this section as the PRD is developed. -->
+    validations:
+      required: false
+
+  - type: textarea
+    id: proposed_change
+    attributes:
+      label: Proposed change
+      description: Describe the new or expanded capability without prescribing implementation unless it is an intentional constraint.
+      value: |
+        <!-- Complete this section as the PRD is developed. -->
+    validations:
+      required: false
+
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: Acceptance criteria
+      description: Describe the observable results required for completion. Summarize the major outcomes if a detailed specification exists.
+      value: |
+        <!-- Complete this section as the specification is developed. -->
+    validations:
+      required: false
+
+  - type: textarea
+    id: website_facts_affected
+    attributes:
+      label: Website facts affected
+      description: List changes to facts in `website-facts.yaml` at the repository root. Leave empty if none change.
+    validations:
+      required: false
+
+  - type: textarea
+    id: repository_artifacts
+    attributes:
+      label: Repository artifacts
+      description: Provide repository-relative paths for any approved feature artifacts.
+      value: |
+        PRD:
+        Specification:
+        Project plan:
+    validations:
+      required: false
+
+  - type: textarea
+    id: scope_boundaries
+    attributes:
+      label: Scope boundaries
+      description: List anything explicitly excluded or any existing behavior that must remain unchanged.
+      value: |
+        <!-- Add scope boundaries when known. -->
+    validations:
+      required: false
+
+  - type: textarea
+    id: designs_and_references
+    attributes:
+      label: Designs and external references
+      description: Provide links to designs, research, examples, discussions, or other relevant material.
+      value: |
+        <!-- Add relevant repository paths or external links. -->
+    validations:
+      required: false
+
+  - type: textarea
+    id: supporting_files
+    attributes:
+      label: Supporting files
+      description: Attach any designs, diagrams, or other files that help explain the feature.
+      value: |
+        <!-- Attach supporting files here. -->
+    validations:
+      required: false

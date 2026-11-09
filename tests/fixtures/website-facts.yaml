@@ -1,0 +1,16 @@
+# Test input for the Playwright web server. example.com is a reserved test
+# domain (RFC 2606).
+site_name:
+business_name:
+site_description:
+production_url: https://example.com
+redirecting_hostnames:
+language: en
+other_languages:
+hosting_provider:
+dns_provider:
+domain_registrar:
+analytics:
+user_data_stored:
+maintainer:
+client_approver:

@@ -1,0 +1,15 @@
+# Invalid test input: the production URL can't be "none".
+site_name:
+business_name:
+site_description:
+production_url: none
+redirecting_hostnames:
+language:
+other_languages:
+hosting_provider:
+dns_provider:
+domain_registrar:
+analytics:
+user_data_stored:
+maintainer:
+client_approver:

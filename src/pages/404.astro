@@ -1,0 +1,20 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const title = "Page not found";
+const description = "The page you're looking for can't be found.";
+---
+
+<BaseLayout title={title} description={description}>
+  <main class="mx-auto max-w-3xl px-6 py-16">
+    <h1 class="text-3xl font-bold tracking-tight">{title}</h1>
+    <p class="mt-4">
+      Sorry, we can't find that page. It may have moved or no longer exists.
+    </p>
+    <p class="mt-4">
+      <a href="/" class="underline">
+        Go to the homepage
+      </a>
+    </p>
+  </main>
+</BaseLayout>

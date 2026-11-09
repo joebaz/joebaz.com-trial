@@ -1,0 +1,16 @@
+# Test input with the site name, production URL, and language decided. fr shows
+# that the language comes from this file.
+site_name: Example Site
+business_name:
+site_description:
+production_url: https://example.com
+redirecting_hostnames:
+language: fr
+other_languages:
+hosting_provider:
+dns_provider:
+domain_registrar:
+analytics:
+user_data_stored:
+maintainer:
+client_approver:

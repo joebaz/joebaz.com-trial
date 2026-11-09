@@ -1,0 +1,83 @@
+name: Content Issue
+description: Request one focused change to site content, page structure, shared data, and/or metadata.
+title: "[Content]: "
+labels:
+  - content
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe one focused or cohesive outcome. A change may affect multiple pages or shared components.
+
+        Do not include secrets, credentials, `.env` values, local paths, or private personal or customer information. Only provide personal information that is approved for public website publication.
+
+  - type: dropdown
+    id: request_type
+    attributes:
+      label: Primary request type
+      description: Choose the best match. Select "Not sure" if you would like help classifying the request.
+      options:
+        - Update structured content
+        - Edit existing pages
+        - Update shared site data
+        - Add a page
+        - Delete a page
+        - Change navigation or page structure
+        - Update site metadata
+        - Not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: desired_outcome
+    attributes:
+      label: Desired outcome
+      description: What would you like visitors to see, understand, or be able to find after this change?
+    validations:
+      required: true
+
+  - type: textarea
+    id: success
+    attributes:
+      label: What does success look like?
+      description: Describe the observable results that would make this change complete. You do not need to provide technical implementation details.
+    validations:
+      required: true
+
+  - type: textarea
+    id: website_facts_affected
+    attributes:
+      label: Website facts affected
+      description: List changes to facts in `website-facts.yaml` at the repository root. Leave empty if none change.
+    validations:
+      required: false
+
+  - type: textarea
+    id: content_and_references
+    attributes:
+      label: Content and references
+      description: Provide any text, public links, or examples that can help with this change. Indicate whether each item is final content or reference material.
+      value: |
+        <!-- Add content, references, or examples when available. -->
+    validations:
+      required: false
+
+  - type: textarea
+    id: supporting_files
+    attributes:
+      label: Supporting files
+      description: Upload any images or PDFs that can help with this change. Before uploading, redact private personal or customer information unless it is approved for public website publication. Indicate in the field above whether each file is final content or reference material.
+      value: |
+        <!-- Attach supporting files here. -->
+    validations:
+      required: false
+
+  - type: textarea
+    id: unchanged
+    attributes:
+      label: What must stay the same?
+      description: List anything that should not change, such as existing wording, images, links, layout, or behavior.
+      value: |
+        <!-- Add anything that must remain unchanged. -->
+    validations:
+      required: false
