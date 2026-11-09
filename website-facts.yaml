@@ -7,17 +7,17 @@
 #   also be lists.
 # - Never put secrets or credentials in this file.
 # - Adding a new fact needs the maintainer's approval.
-site_name:
-business_name:
-site_description:
+site_name: joebaz.com-trial
+business_name: NA
+site_description: Test run of web-starter with joebaz.com
 production_url:
 redirecting_hostnames:
-language:
+language: en
 other_languages:
 hosting_provider:
 dns_provider:
 domain_registrar:
 analytics:
 user_data_stored:
-maintainer:
-client_approver:
+maintainer: Joe
+client_approver: Joe

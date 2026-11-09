@@ -4,7 +4,7 @@ applies_to: All issue types
 authority:
   - This file owns the sequence, handoffs, approval gates, loops, update timing, and the Progress Readout.
   - Each step's method links to the role SOP or guide that says how to do it.
-  - specs/15-lifecycle.md is the historical design record.
+  - https://github.com/joebaz/web-starter/blob/main/docs/specs/15-lifecycle.md is the historical design record.
 reading:
   - Stages run in order. Steps run in listed order unless a transition names another step.
   - Transitions target unique step keys, independent of position.

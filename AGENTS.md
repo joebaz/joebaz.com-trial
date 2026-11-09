@@ -1,6 +1,5 @@
 ## Repository guidance
 
-- In a repository created from the Template that hasn't been bootstrapped yet, follow `docs/bootstrap-website.md`.
 - When editing code or site content in this repository, read and follow [coding-standards.md](coding-standards.md) for the requested change and directly affected code or content. Apply conditional rules only to capabilities involved in the task.
 - Follow [CONTRIBUTING.md](CONTRIBUTING.md) for issue scope, branch types, validation, and pull requests. Use the current issue and any approved artifacts it identifies for task-specific requirements.
 - Keep coding conventions in the standards and workflow instructions in the contributing guide instead of duplicating them here.
