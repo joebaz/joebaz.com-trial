@@ -1,22 +1,6 @@
-<!-- template-only:start -->
+# joebaz.com-trial
 
-# Astro Web Starter
-
-This repository is the [web-starter Template](https://github.com/joebaz/web-starter) for informational website projects.
-
-## Getting Started
-
-1. On GitHub’s **Create a new repository** page, under **Start with a template**, select **joebaz/web-starter**. Choose the new repository’s owner, name, and visibility.
-2. Clone the new repository and open it in your agent tool. Its machine setup is listed under [Requirements](#requirements) and in the Wiki's [Agent setup](https://github.com/joebaz/web-starter/wiki/Agent-Setup). [Paseo](https://paseo.sh/) is optional.
-3. In a fresh agent session, send this prompt, replacing `<site-name>` with the website's name:
-
-   ```text
-   Bootstrap this repo for a new website called <site-name>.
-   ```
-
-The agent asks you a few setup questions, then does the work, including commits, pushes, and the pull request; you give final sign-off and merge. Bootstrap sets up the repository; website content comes later. The full procedure is in [docs/bootstrap-website.md](docs/bootstrap-website.md).
-
-<!-- template-only:end -->
+This repository was created from the [web-starter Template](https://github.com/joebaz/web-starter) for informational website projects.
 
 This repository uses Astro, React, Tailwind CSS, and TypeScript. The sections below describe its tools, commands, agent workflow, and documentation.
 
@@ -50,11 +34,11 @@ Command definitions and dependency versions are in [package.json](package.json).
 
 ## Agent workflow and skills
 
-Start with [AGENTS.md](AGENTS.md) for repository guidance and the [role SOPs](docs/agents/roles/). The SOPs describe each role's work in the [Lifecycle](docs/lifecycle.yaml). Consult the [coding standards](coding-standards.md) for implementation conventions and the [glossary](GLOSSARY.md) for shared terminology. The Wiki's [Agent setup](https://github.com/joebaz/web-starter/wiki/Agent-Setup) describes the external skills and tool settings used by the roles. Configure those skills in the agent tool; they are not npm dependencies or files installed by this repository.
+Start with [AGENTS.md](AGENTS.md) for repository guidance and the [role SOPs](docs/agents/roles/). The SOPs describe each role's work in the [Lifecycle](docs/lifecycle.yaml). Consult the [coding standards](coding-standards.md) for implementation conventions and the [glossary](GLOSSARY.md) for shared terminology. The Wiki's [Agent setup](https://github.com/joebaz/joebaz.com-trial/wiki/Agent-Setup) describes the external skills and tool settings used by the roles. Configure those skills in the agent tool; they are not npm dependencies or files installed by this repository.
 
 This repository supports [Paseo](https://paseo.sh/) for isolated, agent-assisted work. [paseo.json](paseo.json) contains committed configuration for worktree setup, scripts, and branch-name generation.
 
-Paseo is optional; standard Node.js and npm tooling also supports development, tests, and builds. The Wiki's [Paseo setup](https://github.com/joebaz/web-starter/wiki/Paseo-Setup) describes its system prompt and agent profiles.
+Paseo is optional; standard Node.js and npm tooling also supports development, tests, and builds. The Wiki's [Paseo setup](https://github.com/joebaz/joebaz.com-trial/wiki/Paseo-Setup) describes its system prompt and agent profiles.
 
 The configured worktree setup hook runs `npm ci` to install dependencies from the lockfile.
 
@@ -78,7 +62,7 @@ For adding page scans and interactive-state checks, see [Accessibility smoke tes
 
 The [QA reference](docs/qa.md) sets the browser, accessibility, performance, and phone coverage that test plans must meet.
 
-For human checks before launch, see the Wiki's [Accessibility review](https://github.com/joebaz/web-starter/wiki/Accessibility-Review).
+For human checks before launch, see the Wiki's [Accessibility review](https://github.com/joebaz/joebaz.com-trial/wiki/Accessibility-Review).
 
 Validation tools:
 
@@ -132,7 +116,7 @@ See [CONTRIBUTING](CONTRIBUTING.md#validate-your-change) for which checks run an
 
 For shared metadata and page setup, see [Configure a site and add pages](docs/configure-site-and-pages.md). For generated crawl-discovery files and exclusions, see [Configure the sitemap and robots.txt](docs/configure-sitemap-and-robots.md).
 
-The [issue tracker guide](docs/agents/issue-tracker.md) explains where issues, specs, and plans live. The human-facing [site launch checklist](https://github.com/joebaz/web-starter/wiki) covers setup, Project choices, launch verification, and operating notes.
+The [issue tracker guide](docs/agents/issue-tracker.md) explains where issues, specs, and plans live. The human-facing [site launch checklist](https://github.com/joebaz/joebaz.com-trial/wiki) covers setup, Project choices, launch verification, and operating notes.
 
 ## Website facts
 
@@ -142,4 +126,4 @@ The [issue tracker guide](docs/agents/issue-tracker.md) explains where issues, s
 
 `npm run build` produces `dist/`. Review [site configuration](docs/configure-site-and-pages.md) for shared metadata and page setup before configuring deployment for the selected host.
 
-Record the chosen host as `hosting_provider` in [website-facts.yaml](website-facts.yaml). Follow the human [site launch checklist](https://github.com/joebaz/web-starter/wiki) to set up hosting and check the live site.
+Record the chosen host as `hosting_provider` in [website-facts.yaml](website-facts.yaml). Follow the human [site launch checklist](https://github.com/joebaz/joebaz.com-trial/wiki) to set up hosting and check the live site.

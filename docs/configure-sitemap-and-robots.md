@@ -30,4 +30,4 @@ Run the checks in [CONTRIBUTING.md](../CONTRIBUTING.md#validate-your-change). Bu
 
 For a configured project, inspect the generated sitemap index, its referenced sitemap files, and robots.txt after building. Confirm the intended origin, page-path form, and inclusion/exclusion choices. These checks on build output do not establish live crawlability.
 
-Use the human-facing [template Wiki launch checklist](https://github.com/joebaz/web-starter/wiki) for manual sitemap submission, processing checks, and live robots.txt/crawlability verification. Maintain project-specific operational notes and completion evidence in each project's Wiki. Sitemap submission and processing do not guarantee indexing.
+Use the human-facing [Wiki launch checklist](https://github.com/joebaz/joebaz.com-trial/wiki) for manual sitemap submission, processing checks, and live robots.txt/crawlability verification. Maintain this website's operational notes and completion evidence in the same Wiki. Sitemap submission and processing do not guarantee indexing.
